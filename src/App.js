@@ -1,6 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
+import {Task} from "./task"
 
 function App() {
   const [toDoList, setToDoList] = useState([]);
@@ -14,6 +15,7 @@ function App() {
     const task = {
       id: toDoList.length === 0 ? 1 : toDoList[toDoList.length - 1].id + 1,
       taskName: newTask,
+      completed: false,
     };
     // const newToDoList = [...toDoList, newTask];
     setToDoList([...toDoList, task]);
@@ -32,6 +34,18 @@ function App() {
     setToDoList(newToDoList);
   };
 
+  const completeTask = (id) => {
+    setToDoList(
+      toDoList.map((task) => {
+        if (task.id === id) {
+          return { ...task, completed: true };
+        } else {
+          return task;
+        }
+      })
+    );
+  };
+
   return (
     <div className="App">
       <div className='addTask'>
@@ -40,12 +54,19 @@ function App() {
       </div>
       <div className='list'>
         {toDoList.map((task) => {
-          return (
-            <div>
-              <h1>{task.taskName}</h1>
-              <button onClick={() => deleteTask(task.id)}>X</button>
-            </div>
-          );
+          return <Task 
+          taskName={task.taskName} 
+          id={task.id} 
+          completed={task.completed}
+          deleteTask={deleteTask}
+          completeTask={completeTask}          
+          />;
+          // return (
+          //   <div>
+          //     <h1>{task.taskName}</h1>
+          //     <button onClick={() => deleteTask(task.id)}>X</button>
+          //   </div>
+          // );
         })}
 
       </div>
